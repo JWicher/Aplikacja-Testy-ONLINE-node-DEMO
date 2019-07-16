@@ -1,0 +1,237 @@
+<style type="text/css">
+body{
+    font-family: "Roboto", sans-serif;
+}
+
+    .header{
+        display: flex;
+        justify-content: stretch;
+        align-items: center;
+        padding-left: 5mm;
+        padding-right: 5mm;
+        position: relative;
+    }
+    .header > h1 {
+        padding-left: 5mm;
+        flex: 1;
+    }
+
+    .header::after{
+        content: '';
+        width: 95%;
+        height: 100%;
+        border-bottom: 1px solid black;
+        position: absolute;
+    }
+
+    .logo__pojemnik{
+        width: 40px;
+        height: 40px;
+
+    }
+
+    .logo__logo, 
+    .logo__logo::before, 
+    .logo__logo::after{
+        width: 40px;
+        height: 40px;
+        border-top: solid 3px;
+        border-radius: 50%;
+    }
+
+    .logo__logo{
+        border-top-color: red;
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .logo__logo::before,
+    .logo__logo::after{
+        content: '';
+        position: absolute; 
+        top: -3px;
+    }
+
+    .logo__logo::before{
+        border-top-color: green;
+        transform: rotate(120deg);
+    }
+
+    .logo__logo::after{
+        border-top-color: blue;
+        transform: rotate(240deg);
+    }
+
+ .zadanie {
+    display: inline-block;
+    vertical-align:top;
+    page-break-after: auto;
+    page-break-inside: avoid;
+    position: relative;
+    -webkit-region-break-inside: avoid;
+  }
+
+ .opcje_wyboru {
+     page-break-before:avoid;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+    position: relative;
+    -webkit-region-break-inside: avoid;
+  }
+
+.opcjaZaznaczenie{
+    position: relative;
+}
+.opcjaZaznaczenie::before{
+    content: '';
+
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: -2px;
+    left: -7px;
+    border: solid 2px blue;
+    border-top: none;
+    border-radius: 50%;
+}
+
+</style>
+<html>
+    <body>
+        <div class="header">
+            <div class="logo__pojemnik">
+                <div class="logo__logo"></div>
+            </div>
+            <h1>JW TESTY ONLINE</h1>
+            <div>
+                <div style="text-align: center; font-weight: bold; margin-bottom: 2mm">Data wypełnienia testu</div>
+                <div style="text-align: right">{{dataWypełnieniaTestu.dataISO}}</div>   
+            </div>
+        </div>
+
+        <!-- Podsumowanie wyników i dane kandydata -->
+        <div style="margin: 0 5mm; padding: 3mm 0mm; display: flex; justify-content: space-between; border-bottom: 1px solid black;">
+
+                <!-- Zadania -->
+                <div style="max-width: 70%;">
+
+                    <!-- Napis u góry -->
+                    <div style="margin-bottom: 1mm;">
+                        <span>Test:</span>
+                        <span style="font-weight: bold; text-transform: uppercase">{{test.nazwa}}</span>
+                    </div>
+                    <div>
+                        <span>Limit czasu:</span>
+                        {{#formatujCzas test.limitCzasowy}}
+                            <span>{{minuty}} :</span>
+                            <span>{{sekundy}} [min:sek]</span>
+                        {{/formatujCzas}}
+                            
+                        </div>
+                    <div style="display: flex; align-items: center; margin-bottom: 1mm;">
+                        <div style="margin-right: 2mm;">Podsumowanie zadań zamkniętych:</div>
+                        
+                        {{#ileDobrychOdpowiedzo test.zadania }} 
+                            <div style="border-bottom: solid 1px black; border-radius: 2px; color: black; padding: 2px 4px; margin-right: 1mm; font-style: italic"
+                                >{{iloscPoprawnychOdpowiedzi}}
+                            </div>
+                        {{/ileDobrychOdpowiedzo }} 
+
+                        {{#ileZadanZamknietych test.zadania }} 
+                            <div style="margin-right: 2mm;">/ {{ilośćZadańZamkniętych}} </div>
+                        {{/ileZadanZamknietych }} 
+
+                        <div style="margin: 0 1mm;">=></div>
+
+                        {{#ileProcentDobrychOdpowiedzi test.zadania }} 
+                            <div style="border-bottom: solid 1px black; border-radius: 2px; color: black; padding: 2px 4px; margin-right: 1mm; font-style: italic"
+                                >{{procent}}%
+                            </div>
+                        {{/ileProcentDobrychOdpowiedzi }} 
+
+                    </div>
+
+
+                </div>
+        
+                <!-- Kandydat -->
+                <div style="max-width: 30%">
+                    <div style="text-align: center; font-weight: bold; margin-bottom: 1mm;">Dane kandydata</div>
+                    <div style="display: flex;">
+                        <div style="text-align: right; margin-right: 2mm;">
+                            <div>Imię:</div>
+                            <div>Nazwisko:</div>    
+                        </div>
+                        <div>
+                            <div>{{kandydat.imie}}</div>
+                            <div>{{kandydat.nazwisko}}</div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+        <!-- Zadania testu -->
+        <div style="margin: 0 5mm; padding: 3mm 0mm;">
+
+            <div style="font-weight: bold; margin-bottom: 5mm;">Zadania.</div>
+            <div style="">
+            {{!-- <div style="display: flex; flex-wrap: wrap; justify-content: space-between;"> --}}
+
+                {{#each test.zadania as |zadanie| }}
+                    {{#ifJestRowne zadanie.typ "zamknięte"}}
+                        <div class="zadanie" style="width: 49%; max-width: 49%; margin-bottom: 5mm; display: inline-flex;">
+
+                            <div style="display: inline-flex; margin-right: 2mm;">
+                                {{#ifJestRowne zadanie.poprawna_odpowiedz zadanie.udzielonaOdpowiedz.id}}
+                                    <span style="color: green">&#10004;</span>
+                                {{else}}
+                                    <span style="color: red">&#10007;</span> 
+                                {{/ifJestRowne}}
+                            </div>
+
+                            <div style="display: inline-flex;">
+                                <div style="margin-right: 2mm">{{zadanie.numer}}.</div>
+ 
+                                <div>
+                                    <div>{{zadanie.tresc}}</div>
+                                    <div class="opcje_wyboru" style="margin-top: 1.5mm;">
+                                        <div>
+                                            {{#each zadanie.opcje_wyboru as |opcja| }}
+                                                <div style="display: flex">
+                                                    {{#ifJestRowne opcja.id zadanie.udzielonaOdpowiedz.id}}
+                                                        <div class="opcjaZaznaczenie">{{opcja.id}}.</div>
+                                                    {{else}}
+                                                        <div>{{opcja.id}}.</div>
+                                                    {{/ifJestRowne}}
+
+                                                    <div style="margin-left: 1mm;">{{opcja.tresc}}</div>
+                                                    {{#ifJestRowne opcja.id zadanie.poprawna_odpowiedz}}
+                                                        <span style="color: green; margin-left: 1mm;">&#8656;</span>
+                                                    {{/ifJestRowne}}
+                                                </div>
+                                            {{/each}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {{else}}
+                        <div class="zadanie" style="width: 100%; max-width: 100%; margin-bottom: 5mm;">
+                            <div style="width: 98%; max-width: 98%; padding-bottom: 3mm; display: flex;">
+                                <div style="margin-right: 1mm;">{{zadanie.numer}}.</div>
+                                <div class="opcje_wyboru">{{zadanie.tresc}}</div>
+                            </div>
+                            <div class="opcje_wyboru" style="white-space: pre-line; padding: 2mm 0 3mm 7mm; font-style: italic; border: dashed 1px black; color: blue">{{zadanie.udzielonaOdpowiedz.tresc}}</div>
+                        </div>
+                   
+                    {{/ifJestRowne}}
+                {{/each}}
+
+            </div>
+        </div>
+
+    </body>
+</html>
+

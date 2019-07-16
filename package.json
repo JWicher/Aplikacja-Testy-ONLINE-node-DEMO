@@ -1,0 +1,31 @@
+{
+  "name": "testy_kwalifikacyjne-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": "10.15.3"
+  },
+  "author": "Jarosław Wicher",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "compression": "^1.7.4",
+    "config": "^3.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "fs-extra": "^8.1.0",
+    "handlebars": "^4.1.2",
+    "helmet": "^3.18.0",
+    "joi": "^14.3.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.5.14",
+    "nodemailer": "^6.2.1",
+    "puppeteer": "^1.18.1",
+    "supervisor": "^0.12.0"
+  }
+}

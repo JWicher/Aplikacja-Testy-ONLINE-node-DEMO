@@ -1,0 +1,9 @@
+{
+    "jwtPrivateKey": "testyOnline_jwtPrivateKey",
+    "db": "db_testy_online",
+    "mailUser": "mailUser",
+    "mailUserPass": "mailUserPass"
+
+}
+
+
