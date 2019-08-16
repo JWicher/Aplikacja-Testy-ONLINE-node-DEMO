@@ -18,6 +18,7 @@
     "config": "^3.1.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "filenamify": "^4.1.0",
     "fs-extra": "^8.1.0",
     "handlebars": "^4.1.2",
     "helmet": "^3.18.0",

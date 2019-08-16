@@ -23,7 +23,6 @@ router.post('/', async (req, res) => {
     group = new Group( req.body );
     group = await group.save();
     
-    console.log(group)
     res.status(200).send( group );
 });
 

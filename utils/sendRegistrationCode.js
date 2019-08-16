@@ -29,7 +29,7 @@ async function wyślijMailPotwierdzającyKonto(użytkownik){
             <br />
             <p>Aby dokończyć rejestrację Twojego konta kliknij w poniższy link:</p>
             
-            <a href="https://jw-testy-online.herokuapp.com/rejestracja/${użytkownik._id}" target="_blank">"https://jw-testy-online.herokuapp.com/rejestracja/${użytkownik._id}</a>
+            <a href="https://jw-testy-online.herokuapp.com/rejestracja/${użytkownik._id}" target="_blank">Link aktywacyjny</a>
             <br />
             <br />
             <p>Jeżeli nie się rejestrowałeś, to zignoruj tą wiadomość.</p>

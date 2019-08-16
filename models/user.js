@@ -12,7 +12,8 @@ const userSchema = new mongoose.Schema({
       nazwa: { type: String, default: "" }
     },
     potwierdzonyProfil: { type: Boolean, default: false },
-    czyAdmin: { type: Boolean, default: false }
+    czyAdmin: { type: Boolean, default: false },
+    język: { type: String, default: "en" }
 });
 
 userSchema.methods.generateAuthToken = function() {
@@ -23,6 +24,7 @@ userSchema.methods.generateAuthToken = function() {
         email: this.email,
         firma: this.firma,
         czyAdmin: this.czyAdmin,
+        język: this.język
       },
       config.get("jwtPrivateKey")
     );
@@ -42,7 +44,8 @@ function validateUser(reqBody){
           nazwa: Joi.string()
         }),
         potwierdzonyProfil: Joi.boolean(),
-        czyAdmin: Joi.boolean()
+        czyAdmin: Joi.boolean(),
+        język: Joi.string()
     }
 
     return Joi.validate(reqBody, schema);

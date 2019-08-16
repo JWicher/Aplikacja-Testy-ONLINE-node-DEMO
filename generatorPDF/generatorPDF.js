@@ -2,6 +2,7 @@ const puppeteer = require('puppeteer');
 const fs = require('fs-extra');
 const hbs = require('handlebars');
 const path = require('path')
+const filenamify = require('filenamify');
 
 const compile = async function( nazwSzablonu, dane) {
     const ścieżkaSzablonu = path.join(process.cwd(), 'generatorPDF/szablony', `${nazwSzablonu}.hbs`)
@@ -56,7 +57,8 @@ async function stwórzPDFzWynikami(obiektKoduDostępu) {
         });
 
         const page = await browser.newPage();
-        const nazwaPliku = `${obiektKoduDostępu.test.nazwa} - ${obiektKoduDostępu.kandydat.nazwisko} ${obiektKoduDostępu.kandydat.imie} - ${obiektKoduDostępu.kod}.pdf`
+        const nazwaPlikuPrzedSanityzacją = `${obiektKoduDostępu.test.nazwa} - ${obiektKoduDostępu.kandydat.nazwisko} ${obiektKoduDostępu.kandydat.imie} - ${obiektKoduDostępu.kod}.pdf`
+        const nazwaPliku = filenamify(nazwaPlikuPrzedSanityzacją, {replacement: '-'});
         const ścieżkaPliku = `generatorPDF/plikiPDF/${nazwaPliku}`;
         const content = await compile('szablon1', obiektKoduDostępu)
 
@@ -76,7 +78,7 @@ async function stwórzPDFzWynikami(obiektKoduDostępu) {
         });
 
         
-        console.log('Wykonano plik PDF');
+        console.log(`Wykonano plik PDF ${nazwaPliku}`);
         await browser.close();
         return {ścieżkaPliku, nazwaPliku};
 

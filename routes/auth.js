@@ -20,7 +20,6 @@ router.post('/', async (req, res) => {
   if(!user.potwierdzonyProfil){
     return res.status(400).send("Odmowa dostępu. Nie uruchomiłeś link aktywacyjny przesłany na podany email");
   }
-
   const token = user.generateAuthToken();
   res.header('x-auth-token', token).status(200).send(token); // przejrzeć
 });

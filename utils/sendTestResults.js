@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 const config = require('config');
 
-async function wyślijMailzWynikami(obiektKoduTestu, {ścieżkaPliku, nazwaPliku} ){
+async function wyślijMail(obiektKoduTestu, {ścieżkaPliku, nazwaPliku} ){
   const mailUser = config.get('mailUser');
   const mailUserPass = config.get('mailUserPass');
   let testAccount = await nodemailer.createTestAccount();
@@ -18,7 +18,7 @@ async function wyślijMailzWynikami(obiektKoduTestu, {ścieżkaPliku, nazwaPliku
   // Szczegóły wiadomości
   const przygotowanaTreść = przygotujZawartoćśMaila(obiektKoduTestu);
   let info = await transporter.sendMail({
-    from: 'JW.testy.online@gmail.com',
+    from: 'JW TESTY ONLINE',
     to: obiektKoduTestu.adresaci,
     subject: przygotowanaTreść.temat,
     text: "",
@@ -90,4 +90,4 @@ function zliczPoprawneOdpowiedzi(obiektKoduTestu){
   
   return ilośćPoprawnychOdpowiedzi
 }
-module.exports.wyślijMailzWynikami = wyślijMailzWynikami;
+module.exports.wyślijMail = wyślijMail;
