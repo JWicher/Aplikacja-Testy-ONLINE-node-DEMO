@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 const config = require('config');
 
-async function wyślijMail(obiektKoduTestu, {ścieżkaPliku, nazwaPliku} ){
+async function wyślijMail(obiektKoduTestu, { ścieżkaPliku, nazwaPliku }) {
   const mailUser = config.get('mailUser');
   const mailUserPass = config.get('mailUserPass');
   let testAccount = await nodemailer.createTestAccount();
@@ -22,32 +22,32 @@ async function wyślijMail(obiektKoduTestu, {ścieżkaPliku, nazwaPliku} ){
     to: obiektKoduTestu.adresaci,
     subject: przygotowanaTreść.temat,
     text: "",
-    html: przygotowanaTreść.tresc ,
-        attachments: [
-            {   // utf-8 string as an attachment
-                path: ścieżkaPliku,
-                filename: nazwaPliku
-            }]
+    html: przygotowanaTreść.tresc,
+    attachments: [
+      {   // utf-8 string as an attachment
+        path: ścieżkaPliku,
+        filename: nazwaPliku
+      }]
   });
 }
 
-function przeliczCzasTestu({wykorzystanyCzas}){
-  let {minuty, sekundy} = wykorzystanyCzas
+function przeliczCzasTestu({ wykorzystanyCzas }) {
+  let { minuty, sekundy } = wykorzystanyCzas
   minuty = minuty < 10 ? `0${minuty}` : minuty;
   sekundy = sekundy < 10 ? `0${sekundy}` : sekundy;
   return `${minuty}:${sekundy} [min:sek]`;
 }
 
-function przygotujZawartoćśMaila(obiektKoduTestu){
+function przygotujZawartoćśMaila(obiektKoduTestu) {
   const { kandydat, test } = obiektKoduTestu;
   const temat = `${obiektKoduTestu.test.nazwa} - ${obiektKoduTestu.kandydat.nazwisko} ${obiektKoduTestu.kandydat.imie}`
   const ilośćPoprawnychOdpowiedzi = zliczPoprawneOdpowiedzi(obiektKoduTestu)
-  const zadaniaOtwarte = test.zadania.filter( zadanie => zadanie.typ === "otwarte");
+  const zadaniaOtwarte = test.zadania.filter(zadanie => zadanie.typ === "otwarte");
   const ilośćZamkniętychZadań = test.zadania.length - zadaniaOtwarte.length;
   const sformatowanyCzasTestu = przeliczCzasTestu(obiektKoduTestu);
 
-  const tresc = 
-          `
+  const tresc =
+    `
           <h2>JW TESTY ONLINE</h2>
           <hr />
           <b>Nazwisko:</b> ${kandydat.nazwisko}<br />
@@ -58,12 +58,12 @@ function przygotujZawartoćśMaila(obiektKoduTestu){
           <hr />
 
           ${ilośćZamkniętychZadań <= 0 ? "" :
-          `<b>Zadania zamknięte:</b> ${ilośćPoprawnychOdpowiedzi} / ${ilośćZamkniętychZadań} => ${ Math.round( ilośćPoprawnychOdpowiedzi / ilośćZamkniętychZadań * 100 )  }%<br />
+      `<b>Zadania zamknięte:</b> ${ilośćPoprawnychOdpowiedzi} / ${ilośćZamkniętychZadań} => ${Math.round(ilośćPoprawnychOdpowiedzi / ilośćZamkniętychZadań * 100)}%<br />
             <hr />`
-          }
+    }
 
-          ${ zadaniaOtwarte.length <= 0 ? "" : zadaniaOtwarte.map( zadanie => 
-            `<div>
+          ${ zadaniaOtwarte.length <= 0 ? "" : zadaniaOtwarte.map(zadanie =>
+      `<div>
               <b>Zadania otwarte:</b><br /><br />
               <p><b>Zadanie nr ${zadanie.numer}</b>.</p>
               <p>${zadanie.tresc}</p>
@@ -72,22 +72,23 @@ function przygotujZawartoćśMaila(obiektKoduTestu){
               <hr />
             </div>
             `
-          )}
+    )}
           `;
 
   return { tresc, temat };
 }
 
-function zliczPoprawneOdpowiedzi(obiektKoduTestu){
+function zliczPoprawneOdpowiedzi(obiektKoduTestu) {
   const { zadania } = obiektKoduTestu.test;
   let ilośćPoprawnychOdpowiedzi = 0;
 
-  for( let i = 0; i < zadania.length; i++ ){
-      if(zadania[i].typ === "otwarte") continue;
-      if(zadania[i].poprawna_odpowiedz === zadania[i].udzielonaOdpowiedz.id)
-        ilośćPoprawnychOdpowiedzi++;
+  for (let i = 0; i < zadania.length; i++) {
+    if (zadania[i].typ === "otwarte") continue;
+    if (zadania[i].poprawna_odpowiedz === zadania[i].udzielonaOdpowiedz.id)
+      ilośćPoprawnychOdpowiedzi++;
   }
-  
+
   return ilośćPoprawnychOdpowiedzi
 }
 module.exports.wyślijMail = wyślijMail;
+module.exports.przeliczCzasTestu = przeliczCzasTestu;

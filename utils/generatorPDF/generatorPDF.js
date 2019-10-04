@@ -38,7 +38,7 @@ async function stwórzPDFzWynikami(obiektKoduDostępu) {
       }
     });
 
-    console.log(`Wykonano plik PDF ${nazwaPliku}`);
+    // console.log(`Wykonano plik PDF ${nazwaPliku}`);
 
     await browser.close();
 
